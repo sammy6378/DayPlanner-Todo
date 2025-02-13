@@ -18,7 +18,7 @@ function Navbar() {
         {/* auth */}
         <div className='flex justify-between items-center space-x-6'>
             <Link href={'/login'} className='bg-green-700 py-2 rounded-md px-4 hover:bg-green-800'>Login</Link>
-            <Link href={'/signup'} className=' underline'>Signup</Link>
+            <Link href={'/user-register'} className=' underline'>Signup</Link>
         </div>
     </nav>
   )
