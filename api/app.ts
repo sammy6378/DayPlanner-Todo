@@ -12,12 +12,12 @@ app.use(express.json({limit: "50mb"}));
 app.use(express.urlencoded({extended: true}));
 
 // cors
-const corOptions ={
-    origin: process.env.ORIGIN,
-}
-
-
-app.use(cors(corOptions));
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+  }));
 
 // routes
 app.use('/api/user',userRoute);
