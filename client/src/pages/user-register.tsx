@@ -5,7 +5,7 @@ import { registerUser } from "../services/authService";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import "./globals.css";
-
+import { SyncLoader } from "react-spinners";
 const Register = () => {
   const [userData, setUserData] = useState({
     name: "",
@@ -15,6 +15,7 @@ const Register = () => {
 
   const [message, setMessage] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,6 +26,7 @@ const Register = () => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const response = await registerUser(userData);
       setMessage(response.message);
@@ -37,6 +39,8 @@ const Register = () => {
       } else {
         setMessage(error.message || "An unexpected error occurred. Please try again.");
       }
+    }finally{
+      setIsLoading(false);
     }
   };
 
@@ -92,9 +96,10 @@ const Register = () => {
           {/* Submit Button */}
           <button
             type="submit"
+            disabled={isLoading}
             className="w-full bg-purple-600 text-white py-3 rounded-md font-semibold hover:bg-purple-700 transition duration-300"
           >
-            Sign Up
+           {isLoading ? <SyncLoader color="white" size={8} /> : 'Sign Up'}
           </button>
         </form>
 
@@ -103,7 +108,7 @@ const Register = () => {
 
         {/* Login Link */}
         <p className="text-sm text-gray-600 mt-4">
-          Already have an account? <Link href="/user" className="text-purple-500 hover:underline">Log in</Link>
+          Already have an account? <Link href="/user-login" className="text-purple-500 hover:underline">Log in</Link>
         </p>
       </div>
     </div>
