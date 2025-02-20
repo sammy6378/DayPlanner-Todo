@@ -1,5 +1,5 @@
 import express from 'express';
-import { activateUser, getUserInfo, loginUser, logoutUser, registerUser } from '../controllers/user.controller';
+import { activateUser, getUserInfo, loginUser, logoutUser, registerUser, setReminder } from '../controllers/user.controller';
 
 const route = express.Router();
 
@@ -17,5 +17,8 @@ route.post('/user-logout', logoutUser);
 
 // api/user/user-info
 route.get('/user-info', getUserInfo);
+
+// api/user/event-reminders
+route.get('/event-reminders', setReminder);
 
 export default route;
