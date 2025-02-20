@@ -1,31 +1,28 @@
-import express, { Response, Request, NextFunction } from 'express';
-import 'dotenv/config'
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import userRoute from './routes/user.route';
-
+import 'dotenv/config';
+import cookieParser from 'cookie-parser';
+import useRouter from './Routes/user.route';
 
 export const app = express();
 
+// body parser
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
-//body parser
-app.use(express.json({limit: "50mb"})); 
-app.use(express.urlencoded({extended: true}));
 
-// cors
-app.use(cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"]
-  }));
+// cookie parser
+app.use(cookieParser());
 
-// routes
-app.use('/api/user',userRoute);
+// Routes
+app.use('/api/user', useRouter);
 
-// test
-app.get("/test", (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json({success: true, message: "API working correctly"});
+// server
+app.get('/test', (req: Request, res: Response, next: NextFunction)=>{
+    res.status(200).json({success: true,message: 'Server is running'});
 })
+
 
 //unknown routes
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
