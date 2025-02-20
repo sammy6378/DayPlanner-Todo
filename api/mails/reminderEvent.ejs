@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Event Reminder</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .container { background: #fff; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; }
+        .button { background: #37a39a; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Hello <%= user.name %>,</h2>
+        <p>This is a reminder for your upcoming event:</p>
+
+        <h3><%= event.title %></h3>
+        <p><strong>Date:</strong> <%= new Date(event.eventDateTime).toLocaleString() %></p>
+        <p><strong>Type:</strong> <%= event.eventType === 'online' ? 'Online' : 'In-Person' %></p>
+        
+        <% if (event.eventType === 'inperson') { %>
+            <p><strong>Location:</strong> <%= event.location %></p>
+        <% } %>
+
+        <p>Click the button below to view the event details:</p>
+        <a href="<%= eventLink %>" class="button">View Event</a>
+
+        <p>Best Regards,<br>DayPlanner</p>
+    </div>
+    <div class="footer">
+        <p>&copy; <%= new Date().getFullYear() %> DayPlanner. All rights reserved.</p>
+    </div>
+</body>
+</html>
