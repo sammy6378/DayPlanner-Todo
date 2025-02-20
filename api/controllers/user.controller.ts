@@ -7,22 +7,22 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { sendMail } from "../utils/mail";
 import { accessTokenOptions, refreshTokenOptions, sendToken } from "../utils/jwt";
 import { redis } from "../utils/redis";
-import sanityClient from "@sanity/client";
+import { createClient } from "@sanity/client";
 
-interface IRegisterUser {
-    name: string;
-    email: string;
-    password: string;
-}
-
-const sanity = sanityClient({
+const sanity = createClient({
     projectId: process.env.SANITY_PROJECT_ID,
     dataset: 'production',
     useCdn: false,
     apiVersion: '2023-01-01',
-    token: process.env.SANITY_API_TOKEN, // Secure this!
-  });
+    token: process.env.SANITY_API_TOKEN,
+});
 
+
+  interface IRegisterUser {
+    name: string;
+    email: string;
+    password: string;
+}
 
 
 // register
@@ -136,42 +136,37 @@ export const activateUser = catchAsyncErrors(async(req: Request, res: Response, 
 });
 
 
-// login user 
-export const loginUser = catchAsyncErrors(async(req: Request, res: Response, next:NextFunction)=>{
-    try {
-        const { email, password } = req.body as {email: string, password: string};
-
-        if(!email || !password){
-            return next(new ErrorHandler('Please enter email and password', 400));
+// login user
+export const userLogin = catchAsyncErrors(
+    async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const { password, email } = req.body;
+        if (!password || !email) {
+          return next(new ErrorHandler("Please provide all the fields", 400));
         }
-
-        const user = await userModel.findOne({email});
-        if(!user){
-            return next(new ErrorHandler('Invalid Email or Password', 400));
+  
+        const user = await userModel.findOne({ email });
+        if (!user) {
+          return next(new ErrorHandler("email or password is invalid", 400));
         }
-
-        const isPasswordMatch = await user.comparePasswords(password);
-        if(!isPasswordMatch){
-            return next(new ErrorHandler('Invalid Email or Password', 400));
+  
+        const passwordCorrect = await user.comparePasswords(password);
+        if (!passwordCorrect) {
+          return next(new ErrorHandler("email or password is invalid", 400));
         }
-
-        // create cookies
+  
+        //create cookies
         try {
-            await sendToken(user, res);
-        } catch (error:any) {
-            return next(new ErrorHandler(error.message, 500));
+          await sendToken(user, res);
+        } catch (error: any) {
+          return next(new ErrorHandler(error.message, 400));
         }
-
-        res.status(200).json({
-            success: true,
-            message: 'Logged in successfully',
-            user,
-        });
-
-    } catch (error:any) {
-        return next(new ErrorHandler(error.message, 500));  
+      } catch (error: any) {
+        return next(new ErrorHandler(error.message, 400));
+      }
     }
-})
+  );
+  
 
 
 //logout user
@@ -272,14 +267,27 @@ export const getUserInfo = catchAsyncErrors(
         }
 
         for (const reminder of reminders) {
+            if (!reminder.eventId || !reminder.eventId._ref) {
+                console.log(`Invalid event reference in reminder ID: ${reminder._id}`);
+                continue;
+            }
+
+            // Extract actual event ID
+            const eventId = reminder.eventId._ref;
+
             // Fetch event details
             const eventQuery = `*[_type == "event" && _id == $eventId][0]`;
-            const event = await sanity.fetch(eventQuery, { eventId: reminder.eventId });
+            const event = await sanity.fetch(eventQuery, { eventId });
+
+            if (!event) {
+                console.log(`Event not found for reminder ID: ${reminder._id}`);
+                continue;
+            }
 
             // Check if user exists in MongoDB
             const user = await userModel.findById(reminder.userId);
             if (!user) {
-                console.log(`User not found with id: ${reminder.userId}`);
+                console.log(`User not found with ID: ${reminder.userId}`);
                 continue;
             }
 
