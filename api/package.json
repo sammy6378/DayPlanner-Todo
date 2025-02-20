@@ -13,11 +13,13 @@
   "license": "ISC",
   "dependencies": {
     "@sanity/client": "^6.28.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/nodemailer": "^6.4.17",
     "@types/validator": "^13.12.2",
+    "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
