@@ -1,4 +1,4 @@
-import mongoose, {Document, Schema} from 'mongoose';
+import mongoose, {Document} from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 export interface IUser extends Document {
