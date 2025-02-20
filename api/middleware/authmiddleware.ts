@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { catchAsyncErrors } from "./catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import  { redis } from '../utils/redis';
+import { redis } from "../utils/redis";
 require('dotenv').config();
 
 export const authMiddleware = catchAsyncErrors(async(req: Request, res: Response, next: NextFunction) => {
