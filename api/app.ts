@@ -14,8 +14,12 @@ app.use(express.urlencoded({extended: true}));
 //cookie-parser
 app.use(cookieParser());
 
+const allowedOrigin = process.env.NODE_ENV === 'production'
+  ? 'https://contacts-frontend-ecru.vercel.app' // Deployed frontend URL
+  : 'http://localhost:3000'; // Local development URL
+
 const corsOptions = {
-    origin: "http://localhost:3000",  // Allow frontend
+    origin: allowedOrigin,  // Allow frontend
     credentials: true,  // Allow cookies, sessions
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization"
