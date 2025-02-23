@@ -15,7 +15,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
 const allowedOrigin = process.env.NODE_ENV === 'production'
-  ? `${process.env.FRONTEND_URL}` // Deployed frontend URL
+  ? process.env.FRONTEND_URL // Deployed frontend URL
   : 'http://localhost:3000'; // Local development URL
 
 const corsOptions = {
