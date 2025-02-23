@@ -7,7 +7,6 @@ import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import './globals.css'
 import { SyncLoader } from "react-spinners";
-import { redirect } from "next/navigation";
 
 const Login = () => {
   const [userData, setUserData] = useState({
@@ -35,8 +34,12 @@ const Login = () => {
       setUserData({ email: "", password: "" }); // Clear form on success
       // Redirect to home page
       router.push("/home-page"); 
-    } catch (error: any) {
-      setMessage(error.message || "An unexpected error occurred. Please try again.");
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage(error.message || "An unexpected error occurred. Please try again.");
+      } else {
+        setMessage("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
