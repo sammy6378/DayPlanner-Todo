@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import userRoute from './Routes/user.route';
+import eventsRoute from './Routes/events.route';
 export const app = express();
 import 'dotenv/config';
 
@@ -22,6 +23,7 @@ app.use(cors(corsOptions));
 //routes
 //api/user
 app.use("/api/user", userRoute);
+app.use("/api/events",eventsRoute)
 
 
 //test 
