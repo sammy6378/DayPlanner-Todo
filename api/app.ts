@@ -14,12 +14,15 @@ app.use(express.urlencoded({extended: true}));
 //cookie-parser
 app.use(cookieParser());
 
-//cors
 const corsOptions = {
-    origin: process.env.ORIGIN,
-}
+    origin: "http://localhost:3000",  // Allow frontend
+    credentials: true,  // Allow cookies, sessions
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+};
 
 app.use(cors(corsOptions));
+
 
 //routes
 //api/user
