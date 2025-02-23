@@ -23,7 +23,7 @@ export default defineType({
       options: {
         list: [
           { title: 'Online', value: 'online' },
-          { title: 'In-Person', value: 'inperson' },
+          { title: 'In-Person', value: 'in person' },
         ],
         layout: 'radio',
       },
