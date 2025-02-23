@@ -6,6 +6,7 @@ export interface IUser extends Document {
     email: string;
     password: string;
     isVerified: boolean;
+    autoCompleteTasks: boolean;
     role: string;
     avatar: {
         public_id: string;
@@ -34,6 +35,7 @@ export const userSchema = new mongoose.Schema<IUser>({
         type: Boolean,
         default: false,
       },
+      autoCompleteTasks: { type: Boolean, default: true },
   
       role: {
         type: String,
