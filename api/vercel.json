@@ -3,12 +3,12 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/server.js",
+      "src": "server.ts",
       "use": "@vercel/node"
     }
   ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "dist/server.js" }
+    { "source": "/(.*)", "destination": "server.ts" }
   ],
   "headers": [
     {
