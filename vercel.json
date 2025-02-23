@@ -1,0 +1,9 @@
+{
+    "projects": [
+      {
+        "src": "client/",
+        "use": "@vercel/next"
+      }
+    ]
+  }
+  
