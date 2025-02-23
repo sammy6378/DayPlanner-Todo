@@ -1,5 +1,6 @@
 import express from 'express';
-import { activateUser, getUserInfo, logoutUser, registerUser, userLogin,setReminder } from '../controllers/user.controller';
+import { activateUser, getUserInfo, logoutUser, registerUser, userLogin } from '../controllers/user.controller';
+import { authMiddleware, authorizeRoles } from '../middleware/authMiddleware';
 
 const route = express.Router();
 
@@ -13,12 +14,11 @@ route.post('/activate-user', activateUser);
 route.post('/user-login', userLogin);
 
 // api/user/user-logout (Logout)
-route.post('/user-logout', logoutUser);
+route.post('/user-logout',authMiddleware, logoutUser);
 
 // api/user/user-info
-route.get('/user-info', getUserInfo);
+route.get('/user-info',authMiddleware,authorizeRoles("admin"), getUserInfo);
 
-// api/user/event-reminders
-route.get('/event-reminders', setReminder);
+
 
 export default route;
