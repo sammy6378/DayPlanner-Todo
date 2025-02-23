@@ -1,0 +1,6 @@
+{
+    "watch": ["src"],   
+    "ignore": ["node_modules", "logs", "tmp"], 
+    "exec": "ts-node server.ts"
+  }
+  
