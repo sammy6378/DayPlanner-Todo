@@ -53,6 +53,18 @@ export default defineType({
       type: 'string',
       description: 'Reference to the MongoDB user ID',
     }),
+    defineField({
+      name: "status",
+      title: "Status",
+      type: "string",
+      options: {
+        list: [
+          { title: 'Active', value: 'active' },
+          { title: 'Archived', value: 'archived'},
+        ],
+        layout: 'radio',
+      },
+    })
   ],
   preview: {
     select: {
