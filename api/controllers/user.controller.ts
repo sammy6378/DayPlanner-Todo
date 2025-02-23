@@ -7,15 +7,6 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { sendMail } from "../utils/mail";
 import { accessTokenOptions, refreshTokenOptions, sendToken } from "../utils/jwt";
 import { redis } from "../utils/redis";
-import { createClient } from "@sanity/client";
-
-const sanity = createClient({
-    projectId: process.env.SANITY_PROJECT_ID,
-    dataset: 'production',
-    useCdn: false,
-    apiVersion: '2023-01-01',
-    token: process.env.SANITY_API_TOKEN,
-});
 
 
   interface IRegisterUser {
@@ -257,65 +248,4 @@ export const getUserInfo = catchAsyncErrors(
   );
 
 
-  export const setReminder = catchAsyncErrors(async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const query = `*[_type == "reminder" && sent == false && reminderTime <= now()]`;
-        const reminders = await sanity.fetch(query);
-
-        if (reminders.length === 0) {
-            return res.status(200).json({ success: true, message: 'No reminders to send' });
-        }
-
-        for (const reminder of reminders) {
-            if (!reminder.eventId || !reminder.eventId._ref) {
-                console.log(`Invalid event reference in reminder ID: ${reminder._id}`);
-                continue;
-            }
-
-            // Extract actual event ID
-            const eventId = reminder.eventId._ref;
-
-            // Fetch event details
-            const eventQuery = `*[_type == "event" && _id == $eventId][0]`;
-            const event = await sanity.fetch(eventQuery, { eventId });
-
-            if (!event) {
-                console.log(`Event not found for reminder ID: ${reminder._id}`);
-                continue;
-            }
-
-            // Check if user exists in MongoDB
-            const user = await userModel.findById(reminder.userId);
-            if (!user) {
-                console.log(`User not found with ID: ${reminder.userId}`);
-                continue;
-            }
-
-            // Data to pass to the email template
-            const data = {
-                user: { name: user.name },
-                event,
-                eventLink: `${process.env.FRONTEND_URL}events/${event._id}`,
-            };
-
-            try {
-                // Send email using EJS template
-                await sendMail({
-                    template: 'reminderEvent.ejs',
-                    email: user.email,
-                    subject: `Reminder: ${event.title}`,
-                    data,
-                });
-
-                // Mark reminder as sent in Sanity
-                await sanity.patch(reminder._id).set({ sent: true }).commit();
-            } catch (error: any) {
-                console.error(`Failed to send email to ${user.email}: ${error.message}`);
-            }
-        }
-
-        res.status(200).json({ success: true, message: 'Reminders processed successfully' });
-    } catch (error: any) {
-        return next(new ErrorHandler(error.message, 500));
-    }
-});
+  
