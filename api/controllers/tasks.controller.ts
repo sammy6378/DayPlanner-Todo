@@ -269,39 +269,41 @@ interface Itask {
 }
 
 // Reminder Task Expiry
-export const reminderTaskExpiry = async() => {
-    try {
-        cron.schedule("*/10 * * * *", async () => { // Runs every 10 minutes
+export const reminderTaskExpiry = () => {
+    cron.schedule("*/10 * * * *", async () => { // Runs every 10 minutes
+        try {
             const now = new Date().toISOString();
 
             // Get users who have auto-completion enabled
             const usersWithAutoComplete = await userModel.find({ autoCompleteTasks: true }).select("_id email name");
+
+            if (usersWithAutoComplete.length === 0) return;
 
             // Extract user IDs
             const userIds = usersWithAutoComplete.map(user => user._id as string);
 
             // Fetch expired tasks for these users
             const expiredTasks = await sanity.fetch(
-                `*[_type == "task" && status != "done" && endTime < $now && userId in $userIds]`,
+                `*[_type == "task" && status != "done" && endTime < dateTime($now) && userId in $userIds]`,
                 { now, userIds }
             );
 
             if (expiredTasks.length === 0) return;
 
             // Mark tasks as done in bulk
-            await Promise.all(expiredTasks.map((task:Itask) => 
+            await Promise.all(expiredTasks.map((task: Itask) =>
                 sanity.patch(task._id).set({ status: "done" }).commit()
             ));
             console.log(`✅ Marked ${expiredTasks.length} tasks as done.`);
 
             // Group tasks by user
-            const tasksByUser: Record<string, any[]> = {};
+            const tasksByUser: Record<string, Itask[]> = {};
             expiredTasks.forEach((task:Itask) => {
                 tasksByUser[task.userId] = tasksByUser[task.userId] || [];
                 tasksByUser[task.userId].push(task);
             });
 
-            // Prepare emails for all users
+            // Prepare and send emails only to users with expired tasks
             const emailPromises = Object.entries(tasksByUser).map(async ([userId, tasks]) => {
                 const user = usersWithAutoComplete.find(user => user._id as string === userId);
                 if (!user) return console.log(`User not found with ID: ${userId}`);
@@ -325,9 +327,89 @@ export const reminderTaskExpiry = async() => {
             });
 
             await Promise.all(emailPromises); // Send all emails at once
-        });
+        } catch (error: any) {
+            console.error(`❌ Reminder Task Expiry Error: ${error.message}`);
+        }
+    });
+};
+
+
+
+
+// clear one done task
+export const clearTask = catchAsyncErrors(async (req: Request, res: Response,next:NextFunction)=>{
+    try {
+
+          // check event id
+          const {id} = req.params;
+          if(!id){
+              return next(new ErrorHandler("Id is not valid",400));
+          }
+
+           // check logged user
+            const userId = req.user?._id;
+            if(!userId){
+                return next(new ErrorHandler("user not found",404));
+            }
+
+        const query = `*[_type == "task" && _id = $id[0] && status == "done" && userId == "${userId}]`;
+
+       
+        
+        const user = await userModel.findById(userId);
+        if(!user){
+            return next(new ErrorHandler("user not found",404))
+        }
+
+      
+
+        // check the events
+        const task = await sanity.fetch(query,{id});
+        if(!task){
+            return next(new ErrorHandler("Event not Found",404));
+        }
+
+        // delete event
+        const result = await sanity.delete(id);
+
+        res.status(200).json({success:true, data: result,message: "Event deleted successfully"});
+        
+    } catch (error:any) {
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
+
+
+
+// Clear completed tasks
+export const clearTasks = catchAsyncErrors(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Check logged-in user
+        const userId = req.user?._id;
+        if (!userId) {
+            return next(new ErrorHandler("User not found", 404));
+        }
+
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return next(new ErrorHandler("User not found", 404));
+        }
+
+        // Query events that are marked as 'done' and belong to the user
+        const query = `*[_type == "task" && status == "done" && userId == "${userId}"]`;
+        const tasks = await sanity.fetch(query);
+
+        if (!tasks.length) {
+            return next(new ErrorHandler("Completed tasks not found", 404));
+        }
+
+        // Extract event IDs and delete them
+        const taskIds = tasks.map((task: any) => task._id);
+        await Promise.all(taskIds.map((id:string) => sanity.delete(id)));
+
+        res.status(200).json({ success: true, message: "Tasks deleted successfully" });
 
     } catch (error: any) {
-        return new ErrorHandler(error.message, 500);
+        return next(new ErrorHandler(error.message, 500));
     }
-}
+});
