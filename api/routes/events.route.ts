@@ -1,27 +1,22 @@
 import express from 'express'
-import { addTask, deleteTask, getAllTasks, getTask, setReminder, updateTask } from '../controllers/events.controller';
+import { createEvent, deleteEvent, getEvent, getEvents, updateEvent } from '../controllers/events.controller';
 import { authMiddleware } from '../middleware/authMiddleware';
 
 const route = express.Router();
 
+// api/events/get-events
+route.get("/get-events",authMiddleware, getEvents);
 
-// api/events/event-reminders
-route.get('/event-reminders', setReminder);
+// api/events/get-event
+route.get("/get-event/:id",authMiddleware, getEvent);
 
-// api/events/get-task
-route.get('/get-task',authMiddleware, getTask);
+// api/events/create-event
+route.post("/create-event",authMiddleware, createEvent);
 
-// api/events/get-tasks
-route.get('/get-tasks',authMiddleware, getAllTasks);
+// api/events/update-event
+route.put("/update-event/:id", authMiddleware, updateEvent);
 
-// api/events/add-tasks
-route.post('/add-tasks',authMiddleware, addTask);
-
-// api/events/update-tasks
-route.put('/update-task',authMiddleware, updateTask);
-
-// api/events/delete-task
-route.delete('/delete-task',authMiddleware, deleteTask);
-
+// api/events/delete-event
+route.delete("/delete-event/:id",authMiddleware, deleteEvent);
 
 export default route;
