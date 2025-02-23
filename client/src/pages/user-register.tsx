@@ -32,8 +32,12 @@ const Register = () => {
       const response = await registerUser(userData);
       setMessage(response.message);
       setUserData({ name: "", email: "", password: "" }); // Clear form on success
-    } catch (error: any) {
-      setMessage(error.message || "An unexpected error occurred. Please try again.");
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage(error.message || "An unexpected error occurred. Please try again.");
+      } else {
+        setMessage("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
