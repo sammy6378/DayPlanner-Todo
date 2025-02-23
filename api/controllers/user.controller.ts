@@ -248,4 +248,21 @@ export const getUserInfo = catchAsyncErrors(
   );
 
 
-  
+  // update settings
+  export const updateSettings = catchAsyncErrors(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.user?._id;
+        if (!userId) return next(new ErrorHandler("User not found", 404));
+
+        const { autoCompleteTasks } = req.body;
+        if (typeof autoCompleteTasks !== "boolean") {
+            return next(new ErrorHandler("Invalid value for autoCompleteTasks", 400));
+        }
+
+        const user = await userModel.findByIdAndUpdate(userId, { autoCompleteTasks }, { new: true });
+
+        res.status(200).json({ success: true, message: "Settings updated successfully", data: user });
+    } catch (error: any) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+});
