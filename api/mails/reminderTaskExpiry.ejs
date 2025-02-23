@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Expiry Reminder</title>
+</head>
+<body>
+    <header>
+        <h1>Task Expiry Reminder</h1>
+        <p>Hello, <%= user.name %>!</p>
+    </header>
+    <section>
+        <h2>The following task(s) have expired:</h2>
+        <% tasks.forEach(task => { %>
+            <div>
+                <h3><%= task.title %></h3>
+                <p><strong>Due Date:</strong> <%= new Date(task.endTime).toLocaleString() %></p>
+            </div>
+        <% }); %>
+    </section>
+    <footer>
+        <p>Thank you for using our service!</p>
+        <p>© <%= new Date().getFullYear() %> DayPlanner. All rights reserved.</p>
+    </footer>
+</body>
+</html>
