@@ -8,9 +8,40 @@
     ],
     "routes": [
       {
-        "src": "/(.*)",
-        "dest": "client/$1"
+        "source": "/user/(.*)",
+        "destination": "https://day-planner-todo.vercel.app" 
+      },
+      {
+        "source": "/events/(.*)",
+        "destination": "https://day-planner-todo.vercel.app"
+      },
+      {
+        "source": "/tasks/(.*)",
+        "destination": "https://day-planner-todo.vercel.app"
+      },
+      {
+        "source": "/(.*)",
+        "destination": "/"
       }
-    ]
+    ],
+    "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, X-Requested-With, Accept"
+        }
+      ]
+    }
+  ]
   }
   

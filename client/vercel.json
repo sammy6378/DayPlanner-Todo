@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "rewrites": [
+  "routes": [
     {
       "source": "/user/(.*)",
       "destination": "https://day-planner-todo.vercel.app" 
