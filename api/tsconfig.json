@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "CommonJS",
+    "outDir": "dist",
+    "rootDir": "./",
+    "module": "commonjs",
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
+    "moduleResolution": "Node",
     "strict": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "./dist",   // Compiled JavaScript output
-    "rootDir": "./"      // Your TypeScript source files are in "api/"
-  },
-  "include": ["./"],      // Include all files in "api/"
-  "exclude": ["node_modules", "dist"]
+    "typeRoots": ["./node_modules/@types", "./@types"],
+    "types": ["node"]
+  }
 }
-
-
