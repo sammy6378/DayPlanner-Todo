@@ -1,9 +1,15 @@
 {
   "version": 2,
-  "routes": [
+  "builds": [
+    {
+      "src": "client/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "rewrites": [  
     {
       "source": "/user/(.*)",
-      "destination": "https://day-planner-todo.vercel.app" 
+      "destination": "https://day-planner-todo.vercel.app"
     },
     {
       "source": "/events/(.*)",
@@ -12,10 +18,6 @@
     {
       "source": "/tasks/(.*)",
       "destination": "https://day-planner-todo.vercel.app"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/"
     }
   ],
   "headers": [
