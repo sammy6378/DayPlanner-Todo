@@ -21,7 +21,7 @@ function Navbar() {
 
       {/* Side Navigation Drawer */}
       <div
-        className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 transform transition-transform duration-300 ease-in-out ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64  transform transition-transform duration-300 ease-in-out ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <Sidebar />
       </div>
