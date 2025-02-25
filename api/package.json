@@ -7,7 +7,6 @@
     "dev": "tsx --watch server.ts",
     "start": "node dist/server.js",
     "build": "tsc",
-    "postinstall": "pnpm install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
