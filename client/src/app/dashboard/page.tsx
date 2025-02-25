@@ -6,10 +6,10 @@ import { CalendarPlus, ClipboardList } from "lucide-react";
 
 function Maindashboard() {
   return (
-    <div className="min-h-screen pt-16 px-6 flex flex-col items-center text-center bg-gray-900">
+    <div className="min-h-screen pt-16 px-6 flex flex-col items-center text-center bg-gray-100 dark:bg-gray-900 dark:text-white">
       {/* About Section */}
-      <h1 className="text-3xl font-bold text-slate-100">DayPlanner</h1>
-      <p className="text-slate-200 mt-2 max-w-md">
+      <h1 className="text-3xl font-bold ">DayPlanner</h1>
+      <p className=" mt-2 max-w-md">
         Stay organized and boost productivity with DayPlanner. Easily create events and plan your daily tasks in one place.
       </p>
 
