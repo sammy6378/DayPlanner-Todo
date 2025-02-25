@@ -6,17 +6,9 @@
       "use": "@vercel/next"
     }
   ],
-  "rewrites": [  
+  "rewrites": [
     {
-      "source": "/user/(.*)",
-      "destination": "https://myapiii.azurewebsites.net/api/$1"
-    },
-    {
-      "source": "/events/(.*)",
-      "destination": "https://myapiii.azurewebsites.net/api/$1"
-    },
-    {
-      "source": "/tasks/(.*)",
+      "source": "/api/(.*)",
       "destination": "https://myapiii.azurewebsites.net/api/$1"
     }
   ],
