@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import "./globals.css";
 import { Poppins, Josefin_Sans } from "next/font/google";
 import MobileOnly from "@/utils/mobileOnly";
+import ThemeProvider from "@/utils/ThemeProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,10 +32,13 @@ export default function RootLayout({
 
   return (
     <html className={`${poppins.variable} ${josefin.variable}`} suppressHydrationWarning>
-      <body className="bg-gray-900 text-white" suppressHydrationWarning>
+       <body
+        className={`dark:bg-gradient-to-b dark:from-gray-900 dark:to-black bg-white duration-300 bg-no-repeat min-h-screen w-full dark:text-white text-black`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <MobileOnly> 
           <main>{children}</main>
         </MobileOnly>
+        </ThemeProvider>
       </body>
     </html>
   );
