@@ -9,15 +9,15 @@
   "rewrites": [  
     {
       "source": "/user/(.*)",
-      "destination": "https://day-planner-todo.vercel.app"
+      "destination": "https://myapiii.azurewebsites.net/api/$1"
     },
     {
       "source": "/events/(.*)",
-      "destination": "https://day-planner-todo.vercel.app"
+      "destination": "https://myapiii.azurewebsites.net/api/$1"
     },
     {
       "source": "/tasks/(.*)",
-      "destination": "https://day-planner-todo.vercel.app"
+      "destination": "https://myapiii.azurewebsites.net/api/$1"
     }
   ],
   "headers": [
