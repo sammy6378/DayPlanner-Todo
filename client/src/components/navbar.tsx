@@ -2,36 +2,28 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, User, Bell, LogOut, UserCircle } from "lucide-react";
+import { Menu, X, User, Bell, LogOut, UserCircle } from "lucide-react";
+import Sidebar from "./sidebar";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   return (
-    <nav className="flex justify-between items-center p-4 bg-slate-800 text-white relative">
+    <nav className="flex justify-between items-center p-4 bg-slate-800 text-white fixed top-0 left-0 w-full z-50">
       {/* Menu Button */}
       <button
         onClick={() => setMenuOpen(!menuOpen)}
         className="text-white focus:outline-none"
       >
-        <Menu size={28} />
+        {menuOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
 
       {/* Side Navigation Drawer */}
-      {menuOpen && (
-        <div className="absolute top-0 left-0 h-screen w-64 bg-gray-900 text-white flex flex-col p-4 shadow-lg">
-          <button
-            onClick={() => setMenuOpen(false)}
-            className="text-white self-end mb-4"
-          >
-            ✖
-          </button>
-          <Link href="/" className="py-2 px-4 hover:bg-gray-700 rounded">Home</Link>
-          <Link href="/about" className="py-2 px-4 hover:bg-gray-700 rounded">About</Link>
-          <Link href="/contact" className="py-2 px-4 hover:bg-gray-700 rounded">Contact</Link>
-        </div>
-      )}
+      <div className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-gray-900 text-white shadow-lg transform ${
+          menuOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out`}>
+        <Sidebar />
+      </div>
 
       {/* User Icon with Dropdown */}
       <div className="relative">
@@ -41,13 +33,13 @@ function Navbar() {
 
         {dropdownOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-gray-900 text-white rounded shadow-lg py-2">
-            <Link href="/profile" className="flex items-center px-4 py-2 hover:bg-gray-200">
+            <Link href="/profile" className="flex items-center px-4 py-2 hover:bg-gray-800">
               <UserCircle size={20} className="mr-2" /> Account
             </Link>
-            <Link href="/notifications" className="flex items-center px-4 py-2 hover:bg-gray-200">
+            <Link href="/notifications" className="flex items-center px-4 py-2 hover:bg-gray-800">
               <Bell size={20} className="mr-2" /> Notifications
             </Link>
-            <button className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-200">
+            <button className="flex items-center w-full text-left px-4 py-2 hover:bg-gray-800">
               <LogOut size={20} className="mr-2" /> Logout
             </button>
           </div>
