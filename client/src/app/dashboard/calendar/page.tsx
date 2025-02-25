@@ -7,7 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
 import Badge from '@mui/material/Badge';
-import { Card, CardContent, Typography } from '@mui/material';
+import { Card, CardContent, Typography, useTheme } from '@mui/material';
 
 // Sample event data
 const events = [
@@ -52,6 +52,7 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: number[] 
 }
 
 export default function DateCalendarWithEvents() {
+  const theme = useTheme();
   const [highlightedDays, setHighlightedDays] = React.useState<number[]>(getEventDates());
   const [selectedEvent, setSelectedEvent] = React.useState<any>(null);
 
@@ -78,7 +79,15 @@ export default function DateCalendarWithEvents() {
             } as any,
           }}
           onChange={(date) => handleDayClick(date)}
-          sx={{ flex: 1 }}
+          sx={{
+            flex: 1,
+            marginTop: '60px',
+            backgroundColor: theme.palette.background.default,
+            color: theme.palette.text.primary,
+            '& .MuiDayPicker-root': {
+              backgroundColor: theme.palette.background.paper,
+            },
+          }}
         />
       </LocalizationProvider>
 
