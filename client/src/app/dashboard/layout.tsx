@@ -7,7 +7,9 @@ function Layout({children}: {children: React.ReactNode}) {
   return (
     <div>
     <Navbar />
+    <div className='mt-6'>
       {children}
+    </div>
       <Footer />
     </div> 
   )
