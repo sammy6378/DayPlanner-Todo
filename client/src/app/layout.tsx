@@ -31,7 +31,7 @@ export default function RootLayout({
 
   return (
     <html className={`${poppins.variable} ${josefin.variable}`} suppressHydrationWarning>
-      <body className="bg-gray-900 text-white">
+      <body className="bg-gray-900 text-white" suppressHydrationWarning>
         <MobileOnly> 
           <main>{children}</main>
         </MobileOnly>
