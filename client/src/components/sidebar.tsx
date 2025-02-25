@@ -10,19 +10,7 @@ function Sidebar() {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [active, setActive] = useState(false);
 
-  useEffect(() => {
-    if (window !== undefined) {
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 80) {
-          setActive(true);
-        } else {
-          setActive(false);
-        }
-      });
-    }
-  }, []);
 
   useEffect(() => setMounted(true), []);
 

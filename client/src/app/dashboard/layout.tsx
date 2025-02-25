@@ -1,6 +1,5 @@
 import Footer from '@/components/footer'
 import Navbar from '@/components/navbar'
-import ThemeProvider from "@/utils/ThemeProvider";
 import React from 'react'
 
 

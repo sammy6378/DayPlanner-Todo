@@ -15,6 +15,12 @@ const events = [
   { date: '2025-02-27', title: 'Conference', description: 'Attend annual tech conference' },
 ];
 
+
+interface Event {
+  date: string;
+  title: string;
+  description: string;
+}
 // Extract event dates
 function getEventDates() {
   return events.map(event => parseInt(dayjs(event.date).format('D')));
@@ -53,8 +59,10 @@ function ServerDay(props: PickersDayProps<Dayjs> & { highlightedDays?: number[] 
 
 export default function DateCalendarWithEvents() {
   const theme = useTheme();
-  const [highlightedDays, setHighlightedDays] = React.useState<number[]>(getEventDates());
-  const [selectedEvent, setSelectedEvent] = React.useState<any>(null);
+  const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
+
+  const highlightedDays = getEventDates();
+
 
   const handleDayClick = (day: Dayjs) => {
     const event = events.find(event => dayjs(event.date).isSame(day, 'day'));
