@@ -46,9 +46,9 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full max-w-md bg-white shadow-lg p-6 rounded-xl">
-        <h2 className="text-3xl font-bold text-purple-900 text-center mb-6">Sign In</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100  dark:bg-gray-900 dark:text-white px-4">
+      <div className="w-full max-w-md bg-gray-100 border  dark:bg-gray-900 dark:text-whiteshadow-lg p-6 rounded-xl">
+        <h2 className="text-3xl font-bold text-purple-900 dark:text-white text-center mb-6">Sign In</h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Email Input */}
@@ -59,7 +59,7 @@ const Login = () => {
             value={userData.email}
             onChange={handleChange}
             required
-            className="w-full border text-black border-gray-300 rounded-md p-3 text-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full border dark:bg-gray-900 border-gray-300 rounded-md p-3 text-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
 
           {/* Password Input with Toggle */}
@@ -71,13 +71,13 @@ const Login = () => {
               value={userData.password}
               onChange={handleChange}
               required
-              className="w-full border text-black border-gray-300 rounded-md p-3 text-lg pr-12 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full border dark:bg-gray-900 border-gray-300 rounded-md p-3 text-lg pr-12 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             {/* Eye Icon for Toggle */}
             <button
               type="button"
               onClick={() => setPasswordVisible(!passwordVisible)}
-              className="absolute right-3 top-3 text-gray-500"
+              className="absolute right-3 top-3 text-gray-500 dark:text-white"
             >
               {passwordVisible ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
@@ -87,7 +87,7 @@ const Login = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-purple-600 text-white py-3 rounded-md font-semibold hover:bg-purple-700 transition duration-300 flex justify-center items-center"
+            className="w-full bg-purple-600 dark:text-white py-3 rounded-md font-semibold hover:bg-purple-700 transition duration-300 flex justify-center items-center"
           >
             {isLoading ? <SyncLoader color="white" size={8} /> : "Sign In"}
           </button>
@@ -101,9 +101,9 @@ const Login = () => {
         )}
 
         {/* Register Link */}
-        <p className="text-sm text-gray-600 mt-4 text-center">
+        <p className="text-sm text-gray-600 dark:text-gray-300 mt-4 text-center">
           Not Registered?{" "}
-          <Link href="/user/register" className="text-purple-500 hover:underline">
+          <Link href="/user/register" className="text-purple-500 dark:text-white hover:underline">
             Sign Up
           </Link>
         </p>
