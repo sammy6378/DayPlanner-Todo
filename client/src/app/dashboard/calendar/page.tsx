@@ -79,22 +79,22 @@ export default function DateCalendarWithEvents() {
         <DateCalendar
           defaultValue={dayjs()}
           slots={{
-            day: ServerDay,
+        day: ServerDay,
           }}
           slotProps={{
-            day: {
-              highlightedDays,
-            } as any,
+        day: {
+          highlightedDays,
+        } as PickersDayProps<Dayjs> & { highlightedDays: number[] },
           }}
           onChange={(date) => handleDayClick(date)}
           sx={{
-            flex: 1,
-            marginTop: '60px',
-            backgroundColor: theme.palette.background.default,
-            color: theme.palette.text.primary,
-            '& .MuiDayPicker-root': {
-              backgroundColor: theme.palette.background.paper,
-            },
+        flex: 1,
+        marginTop: '60px',
+        backgroundColor: theme.palette.background.default,
+        color: theme.palette.text.primary,
+        '& .MuiDayPicker-root': {
+          backgroundColor: theme.palette.background.paper,
+        },
           }}
         />
       </LocalizationProvider>
