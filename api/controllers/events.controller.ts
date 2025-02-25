@@ -329,6 +329,7 @@ export const setReminder = async () => {
                         title: event.title,
                         eventDateTime: new Date(event.eventDateTime).toLocaleString(),
                         location: event.location || 'Online',
+                        eventLink: `${process.env.FRONTEND_URL}/${event._id}`,
                     },
                 };
 
