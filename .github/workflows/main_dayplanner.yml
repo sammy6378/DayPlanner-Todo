@@ -1,4 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# Docs for Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
 name: Build and deploy Node.js app to Azure Web App - dayplanner
@@ -30,13 +30,27 @@ jobs:
         run: |
           cd client
           npm install
-          npm run build --if-present
+          npm run build --if-present || { echo "Build failed"; exit 1; }
           npm run test --if-present
+
+      - name: Debug - List files after build
+        run: |
+          cd client
+          ls -la
 
       - name: Zip artifact for deployment
         run: |
           cd client
-          zip -r ../release.zip build
+          if [ -d "build" ]; then
+            zip -r ../release.zip build
+          elif [ -d ".next" ]; then
+            zip -r ../release.zip .next
+          elif [ -d "dist" ]; then
+            zip -r ../release.zip dist
+          else
+            echo "No valid build output found! Check the build process."
+            exit 1
+          fi
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
